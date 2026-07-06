@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Functions</title>
+        <script>
+            let a = 1; // 注意这里head定义的变量在body也能访问
+            function computerChoise(){
+                let a = Math.random();
+                if(a< 1/3 ) return 'R';
+                else if(a < 2/3) return 'S';
+                else return 'P';
+            }
+            function choose(choice){
+                let against = computerChoise();
+                let win_case = ( choice === 'R' && against==='S'
+                    || choice === 'S' && against === 'P'
+                    || choice === 'P' && against === 'R' );
+                let result;
+                if (choice === against) result = "Tie";
+                else if(win_case) result =  'win';
+                else result =  'lose';
+                
+                alert(`you choose ${choice}, computer choose ${against}\nYou ${result} the game.`)
+            }
+        </script>
+    </head>
+    
+    <body>
+        <h2>
+            A Rock Scissor Paper Game with Computer
+        </h2>
+        <button onclick="choose('R')">
+            Rock
+        </button>
+        <button onclick="choose('S')">
+            Scissor
+        </button>
+        <button onclick="choose('P')">
+            Paper
+        </button>
+    </body>
+</html>

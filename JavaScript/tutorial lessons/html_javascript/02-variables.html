@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Variable</title>
+
+        <script>
+            let name = 'stzz';
+            console.log(name);
+        </script>
+        <script>
+            let cost = 5 + 2*3 + 9;
+            // 这里如果要用${}来解析变量，必须用反引号
+            console.log(`Cost of the food: ${cost}$`);
+            let tax = cost*0.1;
+            console.log(`Tax fee(10%): ${tax}$`)
+            let total = cost + tax;
+            console.log(`Total cost: ${total}$`);
+        </script>
+    </head>
+    <body>
+        <p>
+            <script>
+                let cnt = 0;
+            </script>
+            <button onclick="
+                alert(`Now you have ${cnt} goods in cart`);
+            ">
+                Cart
+            </button>
+            <br>
+            <button onclick="
+                cnt++;
+                alert(`Now you have ${cnt} goods in cart`)    
+            ">
+                Add one
+            </button>
+            <button onclick="
+                cnt+=2;
+                alert(`Now you have ${cnt} goods in cart`)    
+            ">
+                +2
+            </button>
+            <button onclick="
+                cnt = 0;
+                alert(`Reset successfully\nNow you have ${cnt} goods in cart`)
+            ">
+                reset
+            </button>
+    </body>
+</html>

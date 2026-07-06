@@ -1,0 +1,186 @@
+<p>
+    下面对Object来一些JS特殊的用法
+    <br>
+    JSON和localStorage
+    <br><br>
+    JSON: JavaScript Object Notation<br>
+    (JavaScript 对象表示法)
+    <br>
+    内容是字典(多个键值对)，但是最终是字符串
+    <br>
+    可以通过JS的JSON对象和Object进行互相转化
+    <br>
+    localStorage: 可以让网页的一些变量不刷新
+    <br>
+    但是只能传字符串形式
+</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Functions</title>
+    <script>
+        let scores = {
+            "win": 0,
+            "lose": 0,
+            "tie": 0,
+        }
+        const stored = JSON.parse(localStorage.getItem("scores"));
+        if(stored) scores = stored;
+    </script>
+    <script>
+        function restart() {
+            scores.win = 0;
+            scores.lose = 0;
+            scores.tie = 0;
+            alert(`Successfully restart.\nNow you've win 0, lose 0, tie 0`);
+        }
+    </script>
+    <script>
+        let a = 1; // 注意这里head定义的变量在body也能访问
+        function computerChoise() {
+            let a = Math.random();
+            if (a < 1 / 3) return 'R';
+            else if (a < 2 / 3) return 'S';
+            else return 'P';
+        }
+    </script>
+    <script>
+        function choose(choice) {
+            let against = computerChoise();
+            let win_case = (choice === 'R' && against === 'S'
+                || choice === 'S' && against === 'P'
+                || choice === 'P' && against === 'R');
+            let result;
+            if (choice === against) {
+                result = "Tie";
+                scores.tie++;
+            }
+            else if (win_case) {
+                result = 'win';
+                scores.win++;
+            }
+            else {
+                result = 'lose';
+                scores.lose++;
+            }
+            alert(`You choose ${choice}, computer choose ${against}
+You ${result} the game.
+You've win : ${scores.win}, lose : ${scores.lose}, tie : ${scores.tie}`);
+            memory();
+        }
+    </script>
+</head>
+
+<body>
+    <h2>
+        A Rock Scissor Paper Game with Computer
+    </h2>
+    <button onclick="choose('R')">
+        Rock
+    </button>
+    <button onclick="choose('S')">
+        Scissor
+    </button>
+    <button onclick="choose('P')">
+        Paper
+    </button>
+    <button onclick="restart()">
+        restart
+    </button>
+
+
+    <br>
+    <br>
+    <p>
+        这里我新建了一个object,要把它转换成JSON,详情请看注释
+    </p>
+    <script>
+        let k = 7;
+        function ff(x) {
+            console.log(`param is ${x}`);
+            return 666;
+        }
+        let Obj = {
+            'a': 2,
+            'b': 3,
+            'c-d': 4,
+            'f--e': 5,
+            'func': function f() {
+                console.log("HI DUDE");
+                return "that's a func";
+            }, // 这里说明Object内部是可以定义并绑定函数的
+            'k': k,
+            'func2': ff, // 这里说明Object内部是可以绑定外部函数的
+            'kkk': ff(3) // 而这里是可以获取函数值的
+            // 为了获取函数值，程序会先执行一次ff(3),在console的第一行
+            // 然后获取返回值，当然是undifined
+        }
+    </script>
+    <script>
+        // !!!!!
+        let jsn = JSON.stringify(Obj);
+        // 这里通过stringify这个方法把object转换成了JSON
+        // 但是会丢失所有绑定的函数，以及undifined
+        // 当然绑定的函数值不会丢
+        console.log(jsn);
+        console.log(jsn.b);
+        // undifined没法访问
+        console.log(typeof(jsn));
+        // 输出string
+        // !!! 注意我现在要转换回object,因为他可以访问
+        let obj = JSON.parse(jsn);
+        console.log(obj);
+        console.log(typeof(obj));
+        // object
+
+    </script>
+    <br>
+    <p>
+        下面针对object的引用属性讲一下JSON的一个用法
+    </p>
+    <script>
+        const ObjBak = Obj;
+        ObjBak[a] = 9;
+        console.log(Obj[a]);
+        // 这里会输出9
+        console.log(Obj === ObjBak);
+        // 输出true
+
+        // 而且可以无视const的限制
+        // 因为Object实际上只指向一个地址
+    </script>
+    <script>
+        // 有的时候我们只想要object的浅拷贝
+        // 在没有函数或者undifined的时候，可以转json再转回来
+        const obj1 = {
+            'a' : 1,
+            'b' : 2
+        }
+        console.log(obj1);
+        const obj2 = obj1;
+        let obj3 = JSON.parse(JSON.stringify(obj1));
+        obj1.a = 7;
+        console.log(obj2);
+        // a已经被改动
+        console.log(obj3);
+        // a没变
+        console.log(obj2 === obj1); // true
+        console.log(obj3 === obj1); // false
+    </script>
+    <p>
+        最后我们来讲一下localStorage,它允许我们在刷新页面的时候变量值不会重新因为script块重新加载而更新<br>
+        比如我想记住当前的比分
+    </p>
+    <script>
+        function memory(){
+            let jsocres = JSON.stringify(scores);
+            localStorage.setItem("scores",jsocres);
+            // 这样就记住了scores，下面我去上面找地方释放这个东西
+            // 最好变成一个函数，用户点一下我就保存一下
+        }
+    </script>
+
+</body>
+
+</html>

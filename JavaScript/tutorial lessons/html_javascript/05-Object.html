@@ -1,0 +1,134 @@
+<!---
+    Object 是一种键值对结构，底层是哈希表。在JS中比较常用
+    name.key可以访问value
+    但是name[key]的鲁棒性更好
+
+    下面用Object优化给RPS游戏加一个计分板功能
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Functions</title>
+    <script>
+        let scores = {
+            "win" : 0 ,
+            "lose" : 0 ,
+            "tie" : 0,
+        }
+    </script>
+    <script>
+        function restart(){
+            scores.win = 0;
+            scores.lose = 0;
+            scores.tie = 0;
+            alert(`Successfully restart.\nNow you've win 0, lose 0, tie 0`);
+        }
+    </script>
+    <script>
+        let a = 1; // 注意这里head定义的变量在body也能访问
+        function computerChoise() {
+            let a = Math.random();
+            if (a < 1 / 3) return 'R';
+            else if (a < 2 / 3) return 'S';
+            else return 'P';
+        }
+    </script>
+    <script>
+            function choose(choice) {
+            let against = computerChoise();
+            let win_case = (choice === 'R' && against === 'S'
+                || choice === 'S' && against === 'P'
+                || choice === 'P' && against === 'R');
+            let result;
+            if (choice === against){
+                result = "Tie";
+                scores.tie++;
+            }
+            else if (win_case){
+                result = 'win';
+                scores.win++;
+            }
+            else{
+                result = 'lose';
+                scores.lose++;
+            }
+            alert(`You choose ${choice}, computer choose ${against}
+You ${result} the game.
+You've win : ${scores.win}, lose : ${scores.lose}, tie : ${scores.tie}`);
+        }
+    </script>
+</head>
+
+<body>
+    <h2>
+        A Rock Scissor Paper Game with Computer
+    </h2>
+    <button onclick="choose('R')">
+        Rock
+    </button>
+    <button onclick="choose('S')">
+        Scissor
+    </button>
+    <button onclick="choose('P')">
+        Paper
+    </button>
+    <button onclick="restart()">
+        restart
+    </button>
+    
+
+    <br>
+    <br>
+    
+    <p>
+        下面学习一下Object的补充内容, 详情请看注释
+    </p>
+    <script>
+        let k = 7;
+        function ff(x){
+            console.log(`param is ${x}`);
+        }
+        let Obj = {
+            'a'  : 2,
+            'b' : 3,
+            'c-d' : 4,
+            'f--e' : 5,
+            'func' : function f(){
+                console.log("HI DUDE");
+                return "that's a func";
+            }, // 这里说明Object内部是可以定义并绑定函数的
+            'k' : k,
+            'func2' : ff, // 这里说明Object内部是可以绑定外部函数的
+            'kkk' : ff(3) // 而这里是可以获取函数值的
+            // 为了获取函数值，程序会先执行一次ff(3),在console的第一行
+            // 然后获取返回值，当然是undifined
+        }
+        console.log(typeof(Obj))
+        // object
+        
+        console.log(Obj.a);
+        console.log(Obj['c-d']);
+        console.log(Obj.func());
+        console.log(Obj.k);
+        console.log(Obj.func2('t'));
+        // 这里调用了一次func2，会执行，然后获取返回值再输出
+
+        console.log(Obj.kkk);
+        // 这里是程序最开始就调用了ff(3), 现在只会单纯输出返回值
+
+    </script>
+    <br>
+    <p>
+        还需要注意一下Object的引用机制, 详情见注释
+    </p>
+    <script>
+        const ObjBak = Obj;
+        ObjBak[a] = 9;
+        console.log(Obj[a]);
+        // 这里会输出9
+        // 而且可以无视const的限制
+        // 因为Object实际上只指向一个地址
+    </script>
+</body>
+</html>
