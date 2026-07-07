@@ -46,6 +46,11 @@
         }
     </script>
     <script>
+        const mp = {
+            R : "Rock",
+            S : "Scissor",
+            P : "Paper"
+        }
         function choose(choice) {
             let against = computerChoise();
             let win_case = (choice === 'R' && against === 'S'
@@ -64,7 +69,7 @@
                 result = 'lose';
                 scores.lose++;
             }
-            alert(`You choose ${choice}, computer choose ${against}
+            alert(`You choose ${mp[choice]}, computer choose ${mp[against]}
 You ${result} the game.
 You've win : ${scores.win}, lose : ${scores.lose}, tie : ${scores.tie}`);
             memory();

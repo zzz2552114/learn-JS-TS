@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DOM</title>
+    </head>
+    <body>
+        <p>
+            这次我们来学习DOM, document object model<br>
+            实际上就是学习“Document”这个内置对象<br>
+            用来操作网页的HTML<br>
+            <br>
+            1.一般来说我们用document.querySelector("")就够了，这会给我们返回一个html元素的object对象<br>
+            2.然后我们document.querySelector("").innerHTML或者document.querySelector("").innerText就可以获取、修改内容了<br>
+            3.querySelector里面一般是写id或者class，写id的话是"#id", 写class的话是".class"<br>
+            4.如果document的操作放在函数里那无所谓，否则要在操作对象加载后再写，就是放在操作对象的下面<br>
+            5.在同一个代码块下可以用this操作。比如button的onclick下面可以用this指代document.querySelector("")<br>
+            6.注意，document.querySelector("").innerHTML或者document.querySelector("").innerText格式是字符串，如果要修改，最后是渲染到html上的，换行是br<br>
+        </p>
+        <p>
+            YouTube Subscribe Button<br>
+        
+            <button class="sub" onclick="
+                if(this.innerText === 'To Subscribe'){
+                    this.innerText = 'Subscribed';
+                    alert('Successfully subscribed');
+                }
+                else{
+                    this.innerText = 'To Subscribe';
+                    alert('Successfully Cancelled subscription');
+                }
+                localStorage.setItem('stage', this.innerText);
+            ">
+                Subscribe
+            </button>
+        </p>
+        <script>
+            const staged = localStorage.getItem('stage');
+            document.querySelector('.sub').innerText = staged || "To Subscribe";
+        </script>
+
+        <!---
+        下面我们来做石头剪刀布的进阶版
+        -->
+        <p>
+            RPS-Advanced
+            <script>
+                let scores = {
+                    "win": 0,
+                    "lose": 0,
+                    "tie": 0,
+                }
+                const stored = JSON.parse(localStorage.getItem("scores"));
+                if (stored) scores = stored;
+            </script>
+            <script>
+                function restart() {
+                    scores.win = 0;
+                    scores.lose = 0;
+                    scores.tie = 0;
+                    memory();
+                    document.querySelector('.dashboard').innerHTML = `Successfully restart.
+<br>win : 0<br>lose : 0<br>tie : 0`;
+                }
+            </script>
+            <script>
+                const mp = {
+                    R: "Rock",
+                    S: "Scissor",
+                    P: "Paper"
+                }
+            </script>
+            <script>
+                function computerChoise() {
+                    let a = Math.random();
+                    if (a < 1 / 3) return 'R';
+                    else if (a < 2 / 3) return 'S';
+                    else return 'P';
+                }
+            </script>
+            <script>
+                function choose(choice) {
+                    let against = computerChoise();
+                    let win_case = (choice === 'R' && against === 'S'
+                        || choice === 'S' && against === 'P'
+                        || choice === 'P' && against === 'R');
+                    let result;
+                    if (choice === against) {
+                        result = "Tie";
+                        scores.tie++;
+                    }
+                    else if (win_case) {
+                        result = 'win';
+                        scores.win++;
+                    }
+                    else {
+                        result = 'lose';
+                        scores.lose++;
+                    }
+                    memory();
+                    document.querySelector('.dashboard').innerHTML = `You ${mp[choice]}--${mp[against]} computer<br>
+You ${result} the game<br>
+win : ${scores.win}
+<br>lose : ${scores.lose}
+<br>tie : ${scores.tie}`;
+                }
+            </script>
+            <script>
+                function memory() {
+                    let jsocres = JSON.stringify(scores);
+                    localStorage.setItem("scores", jsocres);
+                    // 这样就记住了scores，下面我去上面找地方释放这个东西
+                    // 最好变成一个函数，用户点一下我就保存一下
+                }
+            </script>
+            <button onclick="choose('R')">
+                Rock
+            </button>
+            <button onclick="choose('S')">
+                Scissor
+            </button>
+            <button onclick="choose('P')">
+                Paper
+            </button>
+            <button onclick="restart()">
+                restart
+            </button>
+        </p>
+
+        <p class="dashboard">
+
+        </p>
+        <script>
+            document.querySelector('.dashboard').innerHTML = `
+                    The history<br>
+                    win : ${scores.win}<br>
+                    lose : ${scores.lose}<br>
+                    tie : ${scores.tie}`
+        </script>
+    </body>
+</html>
