@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO-List</title>
+        <script src="scripts/08.js"></script>
+    </head>
+    <body>
+        <h2>MY TODO LIST</h2>
+        <input placeholder="add todo" class="input-todo">
+        <button id="adder" onclick="getInput()">
+            add todolist
+        </button>
+        <div id="print"></div>
+        
+        <p> 
+            最后补充一下数组和字符串的一些操作<br>
+            数组赋值也是引用，let array2 = array1,所以修改2也会同步修改1<br>
+            如果要不引用赋值，要用.slice方法，这个相当于切片，左闭右开，不传相当于全切<br>
+            反转的话.reverse()全部反转
+        </p>
+    </body>
+</html>
